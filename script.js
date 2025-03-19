@@ -42,19 +42,31 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     // Cargar datos desde localStorage o usar los valores por defecto
-    let families = JSON.parse(localStorage.getItem("families")) || defaultFamilies;
-    let products = JSON.parse(localStorage.getItem("products")) || defaultProducts;
-    let tables = JSON.parse(localStorage.getItem("tables")) || defaultTables;
+    let families, products, tables;
+    try {
+        families = JSON.parse(localStorage.getItem("families")) || defaultFamilies;
+        products = JSON.parse(localStorage.getItem("products")) || defaultProducts;
+        tables = JSON.parse(localStorage.getItem("tables")) || defaultTables;
+    } catch (error) {
+        console.error("Error al cargar datos de localStorage:", error);
+        families = defaultFamilies;
+        products = defaultProducts;
+        tables = defaultTables;
+    }
 
-    let selectedFamilyId = 1; // Familia seleccionada por defecto (sección principal)
+    let selectedFamilyId = families.length ? families[0].id : null; // Familia seleccionada por defecto
     let selectedTableId = null; // Mesa seleccionada
-    let modalSelectedFamilyId = 1; // Familia seleccionada en el modal
+    let modalSelectedFamilyId = families.length ? families[0].id : null; // Familia seleccionada en el modal
 
     // Funciones para guardar datos en localStorage
     function saveToLocalStorage() {
-        localStorage.setItem("families", JSON.stringify(families));
-        localStorage.setItem("products", JSON.stringify(products));
-        localStorage.setItem("tables", JSON.stringify(tables));
+        try {
+            localStorage.setItem("families", JSON.stringify(families));
+            localStorage.setItem("products", JSON.stringify(products));
+            localStorage.setItem("tables", JSON.stringify(tables));
+        } catch (error) {
+            console.error("Error al guardar datos en localStorage:", error);
+        }
     }
 
     // Elementos del DOM
@@ -75,6 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeTableProductsModal = document.getElementById("close-table-products-modal");
     const familyForm = document.getElementById("family-form");
     const productForm = document.getElementById("product-form");
+    const familyModalTitle = document.getElementById("family-modal-title"); // Añadido
+    const productModalTitle = document.getElementById("product-modal-title"); // Añadido
     const tableProductsModalTitle = document.getElementById("table-products-modal-title");
     const tableProductsList = document.getElementById("table-products-list");
     const modalFamilyList = document.getElementById("modal-family-list");
@@ -117,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderProducts() {
         productList.innerHTML = "";
+        if (!selectedFamilyId) return;
         const filteredProducts = products.filter(product => product.familyId === selectedFamilyId);
         filteredProducts.forEach(product => {
             const productBtn = document.createElement("div");
@@ -166,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let total = 0;
         table.products.forEach(item => {
             const product = products.find(p => p.id === item.productId);
+            if (!product) return; // Saltar si el producto no existe
             const importe = item.quantity * product.price;
             total += importe;
             const row = document.createElement("tr");
@@ -189,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const table = tables.find(t => t.id === selectedTableId);
         table.products.forEach((item, index) => {
             const product = products.find(p => p.id === item.productId);
+            if (!product) return; // Saltar si el producto no existe
             const li = document.createElement("li");
             li.innerHTML = `
                 ${product.name} - Cantidad: ${item.quantity} - ${(item.quantity * product.price).toFixed(2)} €
@@ -218,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderModalProducts() {
         modalProductList.innerHTML = "";
+        if (!modalSelectedFamilyId) return;
         const filteredProducts = products.filter(product => product.familyId === modalSelectedFamilyId);
         filteredProducts.forEach(product => {
             const productBtn = document.createElement("div");
@@ -273,6 +291,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: familyName
             };
             families.push(newFamily);
+            if (!selectedFamilyId) selectedFamilyId = newFamily.id;
+            if (!modalSelectedFamilyId) modalSelectedFamilyId = newFamily.id;
         }
 
         familyModal.style.display = "none";
@@ -320,6 +340,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Funciones para manejar productos
     addProductBtn.onclick = () => {
         console.log("Botón Añadir Producto clicado");
+        if (!selectedFamilyId) {
+            alert("Por favor, crea una familia primero.");
+            return;
+        }
         productModalTitle.textContent = "Añadir Producto";
         document.getElementById("product-name").value = "";
         document.getElementById("product-price").value = "";
@@ -392,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addTableBtn.onclick = () => {
         console.log("Botón Añadir Mesa clicado");
         const newTableId = tables.length ? Math.max(...tables.map(t => t.id)) + 1 : 1;
-        const newTableName = `Mesa ${newTableId}`; // Nombre consecutivo
+        const newTableName = `Mesa ${newTableId}`;
         const newTable = {
             id: newTableId,
             name: newTableName,
@@ -436,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(`Abriendo modal para Mesa ${selectedTableId}`);
         const table = tables.find(t => t.id === selectedTableId);
         tableProductsModalTitle.textContent = `Añadir Productos a ${table.name}`;
-        modalSelectedFamilyId = 1; // Reiniciar la familia seleccionada en el modal
+        modalSelectedFamilyId = families.length ? families[0].id : null;
         renderModalFamilies();
         renderModalProducts();
         renderTableProductsList();
@@ -471,6 +495,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let total = 0;
         table.products.forEach(item => {
             const product = products.find(p => p.id === item.productId);
+            if (!product) return;
             const importe = item.quantity * product.price;
             total += importe;
             ticket += `${product.name} x${item.quantity}: ${importe.toFixed(2)} €\n`;
