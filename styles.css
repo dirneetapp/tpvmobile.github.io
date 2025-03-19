@@ -106,7 +106,7 @@ th {
 
 .table-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Ajustado para botones más pequeños */
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Ajustado para botones de 60px */
     gap: 10px;
 }
 
@@ -117,12 +117,12 @@ th {
     cursor: pointer;
     text-align: center;
     position: relative;
-    width: 50px; /* Tamaño reducido */
-    height: 50px; /* Tamaño reducido */
+    width: 60px; /* Tamaño ajustado a 60px */
+    height: 60px; /* Tamaño ajustado a 60px */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: 10px; /* Fuente más pequeña */
+    font-size: 10px;
 }
 
 .table-btn.occupied {
@@ -134,7 +134,7 @@ th {
 }
 
 .table-btn .table-status {
-    font-size: 8px; /* Fuente más pequeña */
+    font-size: 8px;
     color: #ff4444;
     margin-top: 2px;
 }
@@ -145,7 +145,7 @@ th {
     padding: 1px 3px;
     border: none;
     cursor: pointer;
-    font-size: 8px; /* Reducido para que quepa */
+    font-size: 8px;
 }
 
 .table-btn .edit-btn {
@@ -190,13 +190,13 @@ th {
 
 .family-list, .product-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Ajustado para botones de 60px */
     gap: 10px;
 }
 
 .family-btn, .product-btn {
-    width: 60px;
-    height: 60px;
+    width: 60px; /* Tamaño ajustado a 60px */
+    height: 60px; /* Tamaño ajustado a 60px */
     padding: 5px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -329,13 +329,13 @@ th {
 
 .modal-family-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Ajustado para botones de 60px */
     gap: 10px;
 }
 
 .modal-family-btn {
-    width: 60px;
-    height: 60px;
+    width: 60px; /* Tamaño ajustado a 60px */
+    height: 60px; /* Tamaño ajustado a 60px */
     padding: 5px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -363,13 +363,13 @@ th {
 
 .modal-product-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Ajustado para botones de 60px */
     gap: 10px;
 }
 
 .modal-product-btn {
-    width: 60px;
-    height: 60px;
+    width: 60px; /* Tamaño ajustado a 60px */
+    height: 60px; /* Tamaño ajustado a 60px */
     padding: 5px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -506,12 +506,12 @@ th {
     }
 
     .table-list {
-        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Más grandes para interacción táctil */
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Mantiene 60px para interacción táctil */
     }
 
     .table-btn {
-        width: 60px; /* Tamaño ajustado para interacción táctil */
-        height: 60px;
+        width: 60px; /* Mantiene 60px */
+        height: 60px; /* Mantiene 60px */
         font-size: 12px;
     }
 
@@ -544,12 +544,12 @@ th {
     }
 
     .family-list, .product-list {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Mantiene 60px */
     }
 
     .family-btn, .product-btn {
-        width: 80px;
-        height: 80px;
+        width: 60px; /* Mantiene 60px */
+        height: 60px; /* Mantiene 60px */
         font-size: 12px;
     }
 
@@ -603,12 +603,12 @@ th {
     }
 
     .modal-family-list, .modal-product-list {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Mantiene 60px */
     }
 
     .modal-family-btn, .modal-product-btn {
-        width: 80px;
-        height: 80px;
+        width: 60px; /* Mantiene 60px */
+        height: 60px; /* Mantiene 60px */
         font-size: 12px;
     }
 

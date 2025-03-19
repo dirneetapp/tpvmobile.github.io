@@ -1,7 +1,6 @@
-// Asegurarse de que el DOM esté completamente cargado antes de ejecutar el script
 document.addEventListener("DOMContentLoaded", () => {
     // Datos iniciales (simulando una base de datos)
-    let families = [
+    const defaultFamilies = [
         { id: 1, name: "Bebidas" },
         { id: 2, name: "Cafés" },
         { id: 3, name: "Cervezas" },
@@ -15,9 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 11, name: "Tapas" }
     ];
 
-    let products = [
+    const defaultProducts = [
         { id: 1, name: "Coca Cola", familyId: 1, price: 1.30 },
-        { id: 2, name: "F. N 🙂aranja", familyId: 1, price: 1.30 },
+        { id: 2, name: "F. Naranja", familyId: 1, price: 1.30 },
         { id: 3, name: "F. Limón", familyId: 1, price: 1.30 },
         { id: 4, name: "Bote Coca", familyId: 1, price: 1.50 },
         { id: 5, name: "Bote Fanta", familyId: 1, price: 1.50 },
@@ -36,15 +35,27 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 18, name: "Combinado", familyId: 1, price: 3.50 }
     ];
 
-    let tables = [
+    const defaultTables = [
         { id: 1, name: "Mesa 1", products: [] },
         { id: 2, name: "Mesa 2", products: [] },
         { id: 3, name: "Mesa 3", products: [] }
     ];
 
+    // Cargar datos desde localStorage o usar los valores por defecto
+    let families = JSON.parse(localStorage.getItem("families")) || defaultFamilies;
+    let products = JSON.parse(localStorage.getItem("products")) || defaultProducts;
+    let tables = JSON.parse(localStorage.getItem("tables")) || defaultTables;
+
     let selectedFamilyId = 1; // Familia seleccionada por defecto (sección principal)
     let selectedTableId = null; // Mesa seleccionada
     let modalSelectedFamilyId = 1; // Familia seleccionada en el modal
+
+    // Funciones para guardar datos en localStorage
+    function saveToLocalStorage() {
+        localStorage.setItem("families", JSON.stringify(families));
+        localStorage.setItem("products", JSON.stringify(products));
+        localStorage.setItem("tables", JSON.stringify(tables));
+    }
 
     // Elementos del DOM
     const familyList = document.getElementById("family-list");
@@ -216,6 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="product-price">${product.price.toFixed(2)} €</span>
             `;
             productBtn.onclick = () => {
+                console.log(`Producto ${product.name} clicado en el modal`);
                 const table = tables.find(t => t.id === selectedTableId);
                 const existingProduct = table.products.find(item => item.productId === product.id);
                 if (existingProduct) {
@@ -226,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderTableProductsList();
                 renderTables();
                 renderTicketTable();
+                saveToLocalStorage();
             };
             modalProductList.appendChild(productBtn);
         });
@@ -241,11 +254,13 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     closeFamilyModal.onclick = () => {
+        console.log("Botón Cerrar Modal Familia clicado");
         familyModal.style.display = "none";
     };
 
     familyForm.onsubmit = (e) => {
         e.preventDefault();
+        console.log("Formulario de Familia enviado");
         const familyName = document.getElementById("family-name").value;
         const familyId = document.getElementById("family-id").value;
 
@@ -263,9 +278,11 @@ document.addEventListener("DOMContentLoaded", () => {
         familyModal.style.display = "none";
         renderFamilies();
         renderModalFamilies();
+        saveToLocalStorage();
     };
 
     function editFamily(id) {
+        console.log(`Botón Editar Familia ${id} clicado`);
         const family = families.find(f => f.id === id);
         familyModalTitle.textContent = "Editar Familia";
         document.getElementById("family-name").value = family.name;
@@ -274,6 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function deleteFamily(id) {
+        console.log(`Botón Eliminar Familia ${id} clicado`);
         if (confirm("¿Estás seguro de que deseas eliminar esta familia? Los productos asociados también se eliminarán.")) {
             families = families.filter(f => f.id !== id);
             products = products.filter(p => p.familyId !== id);
@@ -295,12 +313,13 @@ document.addEventListener("DOMContentLoaded", () => {
             renderTicketTable();
             renderModalFamilies();
             renderModalProducts();
+            saveToLocalStorage();
         }
     }
 
     // Funciones para manejar productos
     addProductBtn.onclick = () => {
-        console.log("Botón Añadir Producto clicado"); // Depuración
+        console.log("Botón Añadir Producto clicado");
         productModalTitle.textContent = "Añadir Producto";
         document.getElementById("product-name").value = "";
         document.getElementById("product-price").value = "";
@@ -310,11 +329,13 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     closeProductModal.onclick = () => {
+        console.log("Botón Cerrar Modal Producto clicado");
         productModal.style.display = "none";
     };
 
     productForm.onsubmit = (e) => {
         e.preventDefault();
+        console.log("Formulario de Producto enviado");
         const productName = document.getElementById("product-name").value;
         const productPrice = parseFloat(document.getElementById("product-price").value);
         const productFamilyId = parseInt(document.getElementById("product-family").value);
@@ -338,9 +359,11 @@ document.addEventListener("DOMContentLoaded", () => {
         productModal.style.display = "none";
         renderProducts();
         renderModalProducts();
+        saveToLocalStorage();
     };
 
     function editProduct(id) {
+        console.log(`Botón Editar Producto ${id} clicado`);
         const product = products.find(p => p.id === id);
         productModalTitle.textContent = "Editar Producto";
         document.getElementById("product-name").value = product.name;
@@ -351,6 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function deleteProduct(id) {
+        console.log(`Botón Eliminar Producto ${id} clicado`);
         if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
             products = products.filter(p => p.id !== id);
             tables.forEach(table => {
@@ -360,24 +384,27 @@ document.addEventListener("DOMContentLoaded", () => {
             renderTables();
             renderTicketTable();
             renderModalProducts();
+            saveToLocalStorage();
         }
     }
 
     // Funciones para manejar mesas
     addTableBtn.onclick = () => {
-        const tableName = prompt("Introduce el nombre de la mesa:");
-        if (tableName) {
-            const newTable = {
-                id: tables.length ? Math.max(...tables.map(t => t.id)) + 1 : 1,
-                name: tableName,
-                products: []
-            };
-            tables.push(newTable);
-            renderTables();
-        }
+        console.log("Botón Añadir Mesa clicado");
+        const newTableId = tables.length ? Math.max(...tables.map(t => t.id)) + 1 : 1;
+        const newTableName = `Mesa ${newTableId}`; // Nombre consecutivo
+        const newTable = {
+            id: newTableId,
+            name: newTableName,
+            products: []
+        };
+        tables.push(newTable);
+        renderTables();
+        saveToLocalStorage();
     };
 
     function editTable(id) {
+        console.log(`Botón Editar Mesa ${id} clicado`);
         const table = tables.find(t => t.id === id);
         const newName = prompt("Introduce el nuevo nombre de la mesa:", table.name);
         if (newName) {
@@ -386,10 +413,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (selectedTableId === id) {
                 tableProductsModalTitle.textContent = `Añadir Productos a ${table.name}`;
             }
+            saveToLocalStorage();
         }
     }
 
     function deleteTable(id) {
+        console.log(`Botón Eliminar Mesa ${id} clicado`);
         if (confirm("¿Estás seguro de que deseas eliminar esta mesa?")) {
             tables = tables.filter(t => t.id !== id);
             if (selectedTableId === id) {
@@ -398,11 +427,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             renderTables();
             renderTicketTable();
+            saveToLocalStorage();
         }
     }
 
     function openTableProductsModal() {
         if (!selectedTableId) return;
+        console.log(`Abriendo modal para Mesa ${selectedTableId}`);
         const table = tables.find(t => t.id === selectedTableId);
         tableProductsModalTitle.textContent = `Añadir Productos a ${table.name}`;
         modalSelectedFamilyId = 1; // Reiniciar la familia seleccionada en el modal
@@ -413,18 +444,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     closeTableProductsModal.onclick = () => {
+        console.log("Botón Cerrar Modal Mesa clicado");
         tableProductsModal.style.display = "none";
     };
 
     function removeProductFromTable(index) {
+        console.log(`Botón Eliminar Producto de Mesa (índice ${index}) clicado`);
         const table = tables.find(t => t.id === selectedTableId);
         table.products.splice(index, 1);
         renderTableProductsList();
         renderTables();
         renderTicketTable();
+        saveToLocalStorage();
     }
 
     generateTicketBtn.onclick = () => {
+        console.log("Botón Generar Ticket clicado");
         const table = tables.find(t => t.id === selectedTableId);
         if (table.products.length === 0) {
             alert("La mesa no tiene productos para generar un ticket.");
@@ -447,12 +482,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     clearTableBtn.onclick = () => {
+        console.log("Botón Limpiar Mesa clicado");
         if (confirm("¿Estás seguro de que deseas limpiar esta mesa?")) {
             const table = tables.find(t => t.id === selectedTableId);
             table.products = [];
             renderTableProductsList();
             renderTables();
             renderTicketTable();
+            saveToLocalStorage();
         }
     };
 
