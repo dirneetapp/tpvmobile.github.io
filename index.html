@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TPV Bar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="tpv-container">
+        <!-- Encabezado -->
+        <header class="tpv-header">
+            <div class="header-left">
+                <img src="https://via.placeholder.com/40x40.png?text=Bar" alt="Logo Bar" class="header-logo">
+                <span>Caja 001</span>
+                <span>Fecha: 21/03/2016</span>
+                <span>19:46</span>
+                <span>Ticket</span>
+            </div>
+            <div class="header-right">
+                <span class="total-label">TOTAL</span>
+                <span class="total-amount">8,30</span>
+            </div>
+        </header>
+
+        <!-- Sección principal -->
+        <main class="tpv-main">
+            <!-- Tabla de tickets -->
+            <div class="ticket-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción / Notas</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Dto</th>
+                            <th>Importe</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ticket-table-body">
+                        <!-- Los productos de la mesa seleccionada se añadirán aquí -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Zona de mesas -->
+            <div class="tables-section">
+                <div class="tables-header">
+                    <h3>Mesas</h3>
+                    <button id="add-table-btn" class="add-btn">+ Añadir Mesa</button>
+                </div>
+                <div id="table-list" class="table-list">
+                    <!-- Las mesas se añadirán dinámicamente aquí -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Sección de categorías y productos -->
+        <section class="categories-products">
+            <!-- Categorías -->
+            <div class="categories">
+                <div class="category-header">
+                    <h3>Familias de Productos</h3>
+                    <button id="add-family-btn" class="add-btn">+ Añadir Familia</button>
+                </div>
+                <div id="family-list" class="family-list">
+                    <!-- Las familias se añadirán dinámicamente aquí -->
+                </div>
+            </div>
+
+            <!-- Productos -->
+            <div class="products">
+                <div class="product-header">
+                    <h3>Productos</h3>
+                    <button id="add-product-btn" class="add-btn">+ Añadir Producto</button>
+                </div>
+                <div id="product-list" class="product-list">
+                    <!-- Los productos se añadirán dinámicamente aquí -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal para añadir/editar familia -->
+        <div id="family-modal" class="modal">
+            <div class="modal-content">
+                <span id="close-family-modal" class="close">×</span>
+                <h2 id="family-modal-title">Añadir Familia</h2>
+                <form id="family-form">
+                    <label for="family-name">Nombre de la Familia:</label>
+                    <input type="text" id="family-name" name="family-name" required>
+                    <input type="hidden" id="family-id" name="family-id">
+                    <button type="submit">Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal para añadir/editar producto -->
+        <div id="product-modal" class="modal">
+            <div class="modal-content">
+                <span id="close-product-modal" class="close">×</span>
+                <h2 id="product-modal-title">Añadir Producto</h2>
+                <form id="product-form">
+                    <label for="product-name">Nombre del Producto:</label>
+                    <input type="text" id="product-name" name="product-name" required>
+                    <label for="product-price">Precio (€):</label>
+                    <input type="number" id="product-price" name="product-price" step="0.01" min="0" required>
+                    <label for="product-family">Familia:</label>
+                    <select id="product-family" name="product-family" required>
+                        <!-- Las familias se añadirán dinámicamente aquí -->
+                    </select>
+                    <input type="hidden" id="product-id" name="product-id">
+                    <button type="submit">Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal para gestionar productos de una mesa -->
+        <div id="table-products-modal" class="modal">
+            <div class="modal-content table-modal-content">
+                <span id="close-table-products-modal" class="close">×</span>
+                <h2 id="table-products-modal-title">Añadir Productos a Mesa</h2>
+                <div class="modal-categories-products">
+                    <!-- Categorías -->
+                    <div class="modal-categories">
+                        <div id="modal-family-list" class="modal-family-list">
+                            <!-- Las familias se añadirán dinámicamente aquí -->
+                        </div>
+                    </div>
+                    <!-- Productos -->
+                    <div class="modal-products">
+                        <div id="modal-product-list" class="modal-product-list">
+                            <!-- Los productos se añadirán dinámicamente aquí -->
+                        </div>
+                    </div>
+                </div>
+                <div class="table-products-list">
+                    <h3>Productos en la Mesa</h3>
+                    <ul id="table-products-list">
+                        <!-- Los productos de la mesa se mostrarán aquí -->
+                    </ul>
+                </div>
+                <div class="table-actions">
+                    <button id="generate-ticket-btn">Generar Ticket</button>
+                    <button id="clear-table-btn">Limpiar Mesa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

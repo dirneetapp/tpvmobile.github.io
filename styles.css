@@ -1,0 +1,631 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #d3e4f5;
+}
+
+.tpv-container {
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Encabezado */
+.tpv-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.header-left span {
+    margin-right: 20px;
+}
+
+.header-right {
+    text-align: right;
+}
+
+.total-label {
+    display: block;
+    font-size: 14px;
+}
+
+.total-amount {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Sección principal */
+.tpv-main {
+    display: flex;
+    flex: 1;
+    margin-top: 10px;
+}
+
+/* Tabla de tickets */
+.ticket-table {
+    flex: 2;
+    background-color: #f5f5d5;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #e0e0e0;
+}
+
+/* Zona de mesas */
+.tables-section {
+    flex: 1;
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #f5f5d5;
+    border: 1px solid #ccc;
+}
+
+.tables-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.table-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Ajustado para botones más pequeños */
+    gap: 10px;
+}
+
+.table-btn {
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    width: 50px; /* Tamaño reducido */
+    height: 50px; /* Tamaño reducido */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 10px; /* Fuente más pequeña */
+}
+
+.table-btn.occupied {
+    background-color: #ffcccc;
+}
+
+.table-btn.selected {
+    background-color: #d0e0ff;
+}
+
+.table-btn .table-status {
+    font-size: 8px; /* Fuente más pequeña */
+    color: #ff4444;
+    margin-top: 2px;
+}
+
+.table-btn .edit-btn, .table-btn .delete-btn {
+    position: absolute;
+    top: 2px;
+    padding: 1px 3px;
+    border: none;
+    cursor: pointer;
+    font-size: 8px; /* Reducido para que quepa */
+}
+
+.table-btn .edit-btn {
+    right: 15px;
+    background-color: #ffcc00;
+}
+
+.table-btn .delete-btn {
+    right: 2px;
+    background-color: #ff4444;
+    color: #fff;
+}
+
+/* Categorías y productos */
+.categories-products {
+    display: flex;
+    margin-top: 10px;
+    flex: 1;
+}
+
+.categories {
+    flex: 1;
+    padding: 10px;
+    background-color: #f5f5d5;
+    border: 1px solid #ccc;
+}
+
+.category-header, .product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.add-btn {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.family-list, .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 10px;
+}
+
+.family-btn, .product-btn {
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.family-btn.selected {
+    background-color: #d0e0ff;
+}
+
+.family-btn .edit-btn, .family-btn .delete-btn,
+.product-btn .edit-btn, .product-btn .delete-btn {
+    position: absolute;
+    top: 2px;
+    padding: 1px 3px;
+    border: none;
+    cursor: pointer;
+    font-size: 8px;
+}
+
+.family-btn .edit-btn, .product-btn .edit-btn {
+    right: 15px;
+    background-color: #ffcc00;
+}
+
+.family-btn .delete-btn, .product-btn .delete-btn {
+    right: 2px;
+    background-color: #ff4444;
+    color: #fff;
+}
+
+.product-btn .product-price {
+    display: block;
+    font-size: 8px;
+    color: #555;
+    margin-top: 2px;
+}
+
+.products {
+    flex: 2;
+    padding: 10px;
+    background-color: #f5f5d5;
+    border: 1px solid #ccc;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+    position: relative;
+}
+
+.table-modal-content {
+    width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-content label {
+    font-weight: bold;
+}
+
+.modal-content input, .modal-content select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+.modal-content button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* Modal de mesas: Familias y productos */
+.modal-categories-products {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.modal-categories {
+    flex: 1;
+    padding: 10px;
+    background-color: #f5f5d5;
+    border: 1px solid #ccc;
+}
+
+.modal-family-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 10px;
+}
+
+.modal-family-btn {
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modal-family-btn.selected {
+    background-color: #d0e0ff;
+}
+
+.modal-products {
+    flex: 2;
+    padding: 10px;
+    background-color: #f5f5d5;
+    border: 1px solid #ccc;
+}
+
+.modal-product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 10px;
+}
+
+.modal-product-btn {
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    text-align: center;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modal-product-btn .product-price {
+    display: block;
+    font-size: 8px;
+    color: #555;
+    margin-top: 2px;
+}
+
+.table-products-list {
+    margin-top: 20px;
+}
+
+.table-products-list ul {
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.table-products-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.table-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.table-actions button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#generate-ticket-btn {
+    background-color: #2196F3;
+    color: #fff;
+}
+
+#clear-table-btn {
+    background-color: #ff4444;
+    color: #fff;
+}
+
+/* Media Queries para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+    .tpv-container {
+        padding: 5px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    /* Encabezado */
+    .tpv-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5px;
+    }
+
+    .header-left {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        align-items: center;
+    }
+
+    .header-logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .header-left span {
+        margin-right: 10px;
+        font-size: 12px;
+    }
+
+    .header-right {
+        margin-top: 5px;
+    }
+
+    .total-label {
+        font-size: 12px;
+    }
+
+    .total-amount {
+        font-size: 18px;
+    }
+
+    /* Sección principal */
+    .tpv-main {
+        flex-direction: column;
+        margin-top: 5px;
+    }
+
+    .ticket-table {
+        flex: none;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 3px;
+    }
+
+    .tables-section {
+        flex: none;
+        width: 100%;
+        margin-left: 0;
+        padding: 5px;
+    }
+
+    .tables-header h3 {
+        font-size: 16px;
+    }
+
+    .table-list {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Más grandes para interacción táctil */
+    }
+
+    .table-btn {
+        width: 60px; /* Tamaño ajustado para interacción táctil */
+        height: 60px;
+        font-size: 12px;
+    }
+
+    .table-btn .table-status {
+        font-size: 10px;
+    }
+
+    .table-btn .edit-btn, .table-btn .delete-btn {
+        font-size: 10px;
+    }
+
+    /* Categorías y productos */
+    .categories-products {
+        flex-direction: column;
+    }
+
+    .categories, .products {
+        flex: none;
+        width: 100%;
+        padding: 5px;
+    }
+
+    .category-header h3, .product-header h3 {
+        font-size: 16px;
+    }
+
+    .add-btn {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+
+    .family-list, .product-list {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+
+    .family-btn, .product-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 12px;
+    }
+
+    .family-btn .edit-btn, .family-btn .delete-btn,
+    .product-btn .edit-btn, .product-btn .delete-btn {
+        font-size: 10px;
+    }
+
+    .product-btn .product-price {
+        font-size: 10px;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .table-modal-content {
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        border-radius: 0;
+        padding: 10px;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+    }
+
+    .modal-content form {
+        gap: 5px;
+    }
+
+    .modal-content input, .modal-content select {
+        font-size: 14px;
+    }
+
+    .modal-content button {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .modal-categories-products {
+        flex-direction: column;
+    }
+
+    .modal-categories, .modal-products {
+        flex: none;
+        width: 100%;
+    }
+
+    .modal-family-list, .modal-product-list {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+
+    .modal-family-btn, .modal-product-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 12px;
+    }
+
+    .modal-product-btn .product-price {
+        font-size: 10px;
+    }
+
+    .table-products-list h3 {
+        font-size: 16px;
+    }
+
+    .table-products-list li {
+        font-size: 14px;
+    }
+
+    .table-actions button {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
